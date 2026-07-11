@@ -54,10 +54,9 @@
     .hamburger { width: 22px; height: 16px; display: grid; gap: 4px; }
     .hamburger i { background: #6b7788; border-radius: 10px; }
     .userbar { display: flex; align-items: center; gap: 16px; }
-    .team-select { border: 1px solid #ffc9ce; color: var(--brand); background: #fff8f8; height: 32px; padding: 0 12px; border-radius: 6px; font-weight: 700; }
+    .team-select { border: 1px solid #ffc9ce; color: var(--brand); background: #fff8f8; height: 32px; padding: 0 12px; border-radius: 6px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
     .bell { position: relative; font-size: 18px; }
     .badge { position: absolute; top: -8px; right: -10px; background: var(--brand); color: #fff; font-size: 10px; line-height: 16px; min-width: 16px; text-align: center; border-radius: 16px; }
-    .avatar { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg,#dce9ff,#8db7ff); display: grid; place-items: center; font-weight: 800; color: #235; }
 
     .content { padding: 18px 24px 24px; }
     .page-title { display: flex; justify-content: space-between; align-items: end; margin-bottom: 14px; }
@@ -171,13 +170,13 @@
     <main class="main">
       <header class="topbar">
         <div class="crumb"><div class="hamburger"><i></i><i></i><i></i></div><span>首页</span><span>›</span><strong id="crumbTitle">管理侧运营看板</strong></div>
-        <div class="userbar"><div class="team-select" id="roleSelect">运营团队-团队长</div><div class="bell">🔔<span class="badge" id="noticeBadge">12</span></div><span>?</span><div class="avatar" id="avatarName">张</div><span id="userName">张振鹏 ▾</span></div>
+        <div class="userbar"><div class="team-select" id="roleSelect">运营团队-团队长</div><div class="bell">🔔<span class="badge" id="noticeBadge">12</span></div><span id="userName">张振鹏 ▾</span></div>
       </header>
 
       <section class="content dashboard-view active" id="view-manager">
         <div class="page-title">
           <h1>管理侧运营看板</h1>
-          <div class="fresh">数据更新于 2026-07-11 10:30:00　⟳</div>
+          <div class="fresh">数据更新于 2026-07-07 21:30:00　⟳</div>
         </div>
 
         <div class="kpis">
@@ -539,9 +538,9 @@
   </div>
   <script>
     const viewMeta = {
-      manager: { title: "管理侧运营看板", role: "运营团队-团队长", badge: "12", avatar: "张", user: "张振鹏 ▾" },
-      employee: { title: "员工侧看板", role: "运营团队-员工视角", badge: "8", avatar: "张", user: "张媛明 ▾" },
-      customer: { title: "客户看板", role: "客户服务-客户视角", badge: "3", avatar: "沈", user: "沈先生 ▾" }
+      manager: { title: "管理侧运营看板", role: "运营团队-团队长", badge: "12", user: "张振鹏 ▾" },
+      employee: { title: "员工侧看板", role: "运营团队-员工视角", badge: "8", user: "张媛明 ▾" },
+      customer: { title: "客户看板", role: "客户服务-客户视角", badge: "3", user: "沈先生 ▾" }
     };
 
     document.querySelectorAll("[data-view]").forEach((item) => {
@@ -553,7 +552,6 @@
         document.getElementById("crumbTitle").textContent = meta.title;
         document.getElementById("roleSelect").textContent = meta.role;
         document.getElementById("noticeBadge").textContent = meta.badge;
-        document.getElementById("avatarName").textContent = meta.avatar;
         document.getElementById("userName").textContent = meta.user;
       });
     });
