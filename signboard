@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>资产托管AI指令清算平台 - 管理侧运营看板</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --nav: #062b54;
+      --nav-2: #083866;
+      --brand: #d71920;
+      --brand-soft: #fff1f2;
+      --blue: #1677ff;
+      --cyan: #11a8ff;
+      --green: #16a06b;
+      --orange: #f58b00;
+      --purple: #7654d8;
+      --red: #df1f2d;
+      --text: #1d2736;
+      --muted: #6f7e91;
+      --line: #dfe7f1;
+      --card: #ffffff;
+      --shadow: 0 12px 30px rgba(17, 38, 68, 0.08);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    .app { min-height: 100vh; display: grid; grid-template-columns: 232px 1fr; }
+    .sidebar {
+      background: linear-gradient(180deg, #06284f 0%, #031c3a 100%);
+      color: #fff;
+      padding: 22px 16px;
+      position: relative;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; font-size: 17px; font-weight: 700; }
+    .logo-mark { width: 34px; height: 34px; border-radius: 8px; background: #fff; color: var(--brand); display: grid; place-items: center; font-weight: 900; }
+    .nav-item { height: 46px; display: flex; align-items: center; gap: 12px; padding: 0 14px; margin: 8px 0; border-radius: 6px; color: rgba(255,255,255,.82); font-weight: 600; cursor: pointer; border: 0; width: 100%; background: transparent; font: inherit; text-align: left; }
+    .nav-item.active { background: var(--brand); color: #fff; box-shadow: 0 10px 22px rgba(215,25,32,.26); }
+    .nav-icon { width: 22px; text-align: center; font-size: 16px; }
+    .collapse { position: absolute; bottom: 28px; left: 24px; color: rgba(255,255,255,.76); font-size: 13px; }
+
+    .main { min-width: 980px; }
+    .topbar { height: 58px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; border-bottom: 1px solid var(--line); }
+    .crumb { display: flex; align-items: center; gap: 14px; color: var(--muted); font-size: 13px; }
+    .hamburger { width: 22px; height: 16px; display: grid; gap: 4px; }
+    .hamburger i { background: #6b7788; border-radius: 10px; }
+    .userbar { display: flex; align-items: center; gap: 16px; }
+    .team-select { border: 1px solid #ffc9ce; color: var(--brand); background: #fff8f8; height: 32px; padding: 0 12px; border-radius: 6px; font-weight: 700; }
+    .bell { position: relative; font-size: 18px; }
+    .badge { position: absolute; top: -8px; right: -10px; background: var(--brand); color: #fff; font-size: 10px; line-height: 16px; min-width: 16px; text-align: center; border-radius: 16px; }
+    .avatar { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg,#dce9ff,#8db7ff); display: grid; place-items: center; font-weight: 800; color: #235; }
+
+    .content { padding: 18px 24px 24px; }
+    .page-title { display: flex; justify-content: space-between; align-items: end; margin-bottom: 14px; }
+    h1 { margin: 0; font-size: 20px; letter-spacing: 0; }
+    .fresh { color: var(--muted); font-size: 12px; }
+
+    .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
+    .kpi { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; min-height: 104px; box-shadow: 0 5px 16px rgba(24, 53, 90, 0.04); display: grid; grid-template-columns: 46px 1fr; gap: 12px; align-items: center; }
+    .kpi-icon { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-size: 23px; font-weight: 800; }
+    .kpi-label { color: #3d4b5f; font-size: 13px; font-weight: 700; display: flex; gap: 4px; align-items: center; }
+    .kpi-value { font-size: 30px; line-height: 1.1; margin: 6px 0; font-weight: 800; }
+    .kpi-sub { font-size: 12px; color: var(--muted); }
+    .up { color: var(--green); font-weight: 700; }
+    .down { color: var(--red); font-weight: 700; }
+
+    .grid { display: grid; grid-template-columns: 1.08fr 1.44fr 0.62fr; gap: 14px; }
+    .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .panel-head { height: 43px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; border-bottom: 1px solid #edf2f7; }
+    .panel-title { font-weight: 800; color: #253248; }
+    .more { color: var(--blue); font-size: 12px; font-weight: 700; }
+    .panel-body { padding: 14px 16px; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; color: #526072; font-size: 12px; font-weight: 800; padding: 8px 6px; background: #f8fafc; }
+    td { padding: 10px 6px; border-bottom: 1px solid #eef3f8; font-size: 12px; vertical-align: middle; }
+    tr:last-child td { border-bottom: 0; }
+    .person { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+    .face { width: 24px; height: 24px; border-radius: 50%; background: #edf4ff; display: grid; place-items: center; color: #305b90; font-size: 12px; }
+    .bar { height: 8px; background: #edf3fb; border-radius: 20px; overflow: hidden; min-width: 90px; }
+    .bar span { display: block; height: 100%; background: linear-gradient(90deg, #1c7cff, #00a1ff); border-radius: 20px; }
+    .load-high span { background: linear-gradient(90deg, #ff7a00, #e41d2d); }
+    .tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 5px; font-size: 12px; font-weight: 800; }
+    .tag-blue { color: #1264d8; background: #eaf3ff; }
+    .tag-red { color: var(--red); background: #fff0f1; }
+    .tag-orange { color: #bd6200; background: #fff5e5; }
+    .tag-green { color: var(--green); background: #e9f8f0; }
+    .summary { color: #526072; font-size: 12px; display: flex; justify-content: space-between; padding-top: 8px; }
+    .summary strong { color: #1e2a39; }
+
+    .risk-table td:nth-child(1) { color: #2a3a50; font-weight: 700; }
+    .deadline { color: var(--red); font-weight: 900; }
+    .ok-time { color: var(--green); font-weight: 800; }
+
+    .alert-card { height: 100%; border: 1px solid #ffb2b8; background: linear-gradient(180deg, #fff7f7, #fff); border-radius: var(--radius); padding: 18px 16px; display: flex; flex-direction: column; justify-content: space-between; }
+    .alert-title { color: var(--brand); font-size: 16px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+    .alert-main { margin: 12px 0; font-size: 25px; font-weight: 900; line-height: 1.45; }
+    .alert-main b { color: var(--brand); font-size: 38px; padding: 0 4px; }
+    .button { height: 38px; border: 1px solid var(--brand); color: var(--brand); background: #fff; border-radius: 6px; font-weight: 900; display: inline-flex; justify-content: center; align-items: center; padding: 0 16px; }
+    .button.primary { background: var(--brand); color: #fff; box-shadow: 0 10px 18px rgba(215,25,32,.18); }
+
+    .lower { display: grid; grid-template-columns: 1fr 1fr 1.18fr; gap: 14px; margin-top: 14px; }
+    .notice { display: grid; gap: 9px; font-size: 12px; color: #3f4d61; }
+    .notice-row { display: grid; grid-template-columns: 18px 1fr auto; gap: 8px; align-items: center; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); margin-left: 5px; }
+    .notice strong { color: var(--red); }
+    .charts { display: grid; grid-template-columns: 1fr 148px; gap: 12px; margin-top: 14px; align-items: center; }
+    .mini-row { display: grid; grid-template-columns: 58px 1fr 56px; gap: 8px; align-items: center; margin: 8px 0; font-size: 12px; }
+    .donut { width: 126px; height: 126px; border-radius: 50%; background: conic-gradient(#e51f2a 0 35%, #f68b1f 35% 59%, #1677ff 59% 79%, #21a67a 79% 92%, #7654d8 92% 100%); position: relative; margin: auto; }
+    .donut:after { content: ""; position: absolute; inset: 28px; background: #fff; border-radius: 50%; box-shadow: inset 0 0 0 1px #eef2f6; }
+    .legend { font-size: 11px; color: #536174; display: grid; gap: 7px; }
+    .legend span { display: flex; align-items: center; gap: 6px; }
+    .legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .actions { display: flex; justify-content: flex-end; gap: 10px; padding: 0 16px 15px; }
+
+    .wide { grid-column: span 2; }
+    .risk-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 13px; }
+    .risk-item { border: 1px solid #edf1f6; background: #fbfcff; padding: 10px; border-radius: 7px; }
+    .risk-item label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+    .risk-item b { font-size: 19px; }
+    .dashboard-view { display: none; }
+    .dashboard-view.active { display: block; }
+    .employee-layout { display: grid; grid-template-columns: 1.12fr 1.08fr 0.48fr; gap: 14px; }
+    .customer-layout { display: grid; grid-template-columns: 1.18fr 1.08fr 0.46fr; gap: 14px; }
+    .span-2 { grid-column: span 2; }
+    .line-chart { height: 210px; border: 1px solid #eef3f8; border-radius: 7px; background:
+      linear-gradient(#fff, #fff) padding-box,
+      repeating-linear-gradient(to bottom, transparent 0 39px, #eef3f8 40px),
+      repeating-linear-gradient(to right, transparent 0 82px, #f2f5f9 83px); position: relative; overflow: hidden; }
+    .line-chart svg { position: absolute; inset: 14px 18px 28px 34px; width: calc(100% - 52px); height: calc(100% - 42px); overflow: visible; }
+    .axis-labels { position: absolute; left: 36px; right: 18px; bottom: 8px; display: flex; justify-content: space-between; color: #6f7e91; font-size: 11px; }
+    .stage-track { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; align-items: center; }
+    .stage { position: relative; min-height: 52px; padding: 8px; border-radius: 7px; background: #f7faff; border: 1px solid #e8eef6; font-size: 12px; color: #526072; }
+    .stage.done { color: var(--green); background: #effaf5; border-color: #ccebdd; }
+    .stage.now { color: var(--blue); background: #edf5ff; border-color: #bfdbff; font-weight: 800; }
+    .stage.block { color: var(--red); background: #fff2f3; border-color: #ffc9ce; }
+    .purple-card { border-color: #a98cff; background: linear-gradient(180deg, #f8f4ff, #fff); }
+    .purple-card .alert-title, .purple-card .alert-main b { color: #6d3be6; }
+    .purple-card .button.primary { background: #6d3be6; border-color: #6d3be6; }
+
+    @media (max-width: 1280px) {
+      .app { grid-template-columns: 196px 1fr; }
+      .kpis { grid-template-columns: repeat(3, 1fr); }
+      .grid, .lower, .employee-layout, .customer-layout { grid-template-columns: 1fr; }
+      .wide { grid-column: auto; }
+      .span-2 { grid-column: auto; }
+      .main { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo"><div class="logo-mark">AI</div><span>资产托管AI指令清算Demo平台</span></div>
+      <button class="nav-item"><span class="nav-icon">◆</span><span>文件上传与分配</span></button>
+      <button class="nav-item active" data-view="manager"><span class="nav-icon">▦</span><span>管理侧看板</span></button>
+      <button class="nav-item" data-view="employee"><span class="nav-icon">▣</span><span>员工侧看板</span></button>
+      <button class="nav-item" data-view="customer"><span class="nav-icon">▥</span><span>客户侧看板</span></button>
+      <button class="nav-item"><span class="nav-icon">⚙</span><span>规则配置</span></button>
+      <div class="collapse">‹ 收起菜单</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="crumb"><div class="hamburger"><i></i><i></i><i></i></div><span>首页</span><span>›</span><strong id="crumbTitle">管理侧运营看板</strong></div>
+        <div class="userbar"><div class="team-select" id="roleSelect">运营团队-团队长</div><div class="bell">🔔<span class="badge" id="noticeBadge">12</span></div><span>?</span><div class="avatar" id="avatarName">张</div><span id="userName">张振鹏 ▾</span></div>
+      </header>
+
+      <section class="content dashboard-view active" id="view-manager">
+        <div class="page-title">
+          <h1>管理侧运营看板</h1>
+          <div class="fresh">数据更新于 2026-07-11 10:30:00　⟳</div>
+        </div>
+
+        <div class="kpis">
+          <article class="kpi"><div class="kpi-icon" style="background:#1677ff">▤</div><div><div class="kpi-label">全量待办总量 ⓘ</div><div class="kpi-value">1,256</div><div class="kpi-sub">较昨日 <span class="up">-128 ↓ -11.35%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#f58b00">●</div><div><div class="kpi-label">容量超限预警 ⓘ</div><div class="kpi-value">24</div><div class="kpi-sub">较昨日 <span class="up">-6 ↓ -20.00%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#df1f2d">!</div><div><div class="kpi-label">可能违约预警 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="down">+4 ↑ +28.57%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#7654d8">Ⅱ</div><div><div class="kpi-label">指令停顿异常 ⓘ</div><div class="kpi-value">31</div><div class="kpi-sub">较昨日 <span class="down">+7 ↑ +29.17%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#16a06b">◔</div><div><div class="kpi-label">平均处理时效 ⓘ</div><div class="kpi-value">1分48秒</div><div class="kpi-sub">较昨日 <span class="up">-32秒 ↓ -23.53%</span></div></div></article>
+        </div>
+
+        <div class="grid">
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">经办人员当前负载</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>经办人员</th><th>当前待办数</th><th>负载率</th><th>平均处理时效</th><th>调度建议</th></tr></thead>
+                <tbody>
+                  <tr><td><div class="person"><span class="face">李</span>李思远</div></td><td>285</td><td><div class="bar load-high"><span style="width:85%"></span></div></td><td>1分32秒</td><td><span class="tag tag-blue">重点支援</span></td></tr>
+                  <tr><td><div class="person"><span class="face">王</span>王佳怡</div></td><td>175</td><td><div class="bar"><span style="width:52%"></span></div></td><td>2分05秒</td><td><span class="tag tag-blue">风险处理</span></td></tr>
+                  <tr><td><div class="person"><span class="face">陈</span>陈美琪</div></td><td>133</td><td><div class="bar"><span style="width:42%"></span></div></td><td>2分18秒</td><td><span class="tag tag-blue">规则核查</span></td></tr>
+                  <tr><td><div class="person"><span class="face">张</span>张育鹏</div></td><td>78</td><td><div class="bar"><span style="width:30%"></span></div></td><td>1分50秒</td><td><span class="tag tag-blue">异常处理</span></td></tr>
+                  <tr><td><div class="person"><span class="face">赵</span>赵子墨</div></td><td>90</td><td><div class="bar"><span style="width:54%"></span></div></td><td>1分40秒</td><td><span class="tag tag-blue">异常支援</span></td></tr>
+                  <tr><td><div class="person"><span class="face">刘</span>刘思晴</div></td><td>112</td><td><div class="bar"><span style="width:66%"></span></div></td><td>1分55秒</td><td><span class="tag tag-blue">清算协同</span></td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>团队总量：<strong>1,256</strong></span><span>平均负载率：<strong>54%</strong></span><span>平均处理时效：<strong>1分48秒</strong></span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">异常预警列表</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <div class="risk-strip">
+                <div class="risk-item"><label>容量风险</label><b style="color:#f58b00">24</b> 条</div>
+                <div class="risk-item"><label>时限风险</label><b style="color:#df1f2d">18</b> 条</div>
+                <div class="risk-item"><label>停顿异常</label><b style="color:#7654d8">31</b> 条</div>
+              </div>
+              <table class="risk-table">
+                <thead><tr><th>指令编号</th><th>异常类型</th><th>触发原因</th><th>影响范围</th><th>建议动作</th><th>当前状态</th></tr></thead>
+                <tbody>
+                  <tr><td>INS202507110001</td><td>容量超限</td><td>赎回指令量超过团队承载上限</td><td>5,000,000.00 元</td><td>扩容处理组</td><td><span class="tag tag-red">待处理</span></td></tr>
+                  <tr><td>INS202507110002</td><td>可能违约</td><td>距截止仅余 34 分钟</td><td>2,300,000.00 元</td><td>指定专人跟进</td><td><span class="tag tag-orange">需关注</span></td></tr>
+                  <tr><td>INS202507110003</td><td>指令停顿</td><td>停留复核节点 81 分钟</td><td>涉及 31 只组合</td><td>唤醒复核流程</td><td><span class="tag tag-blue">处理中</span></td></tr>
+                  <tr><td>INS202507110004</td><td>临近截止</td><td>距离清算截止时间不足15分钟</td><td>涉及 17 笔指令</td><td>优先处理</td><td><span class="tag tag-green">已跟进</span></td></tr>
+                  <tr><td>INS202507110005</td><td>业务堆积</td><td>同类业务形成连续峰值</td><td>涉及 86 笔指令</td><td>增加人手</td><td><span class="tag tag-orange">高关注</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <aside class="alert-card">
+            <div>
+              <div class="alert-title">▲ 当前业务堆积</div>
+              <div class="alert-main">建议增加 <b>2</b><br />人力支持</div>
+            </div>
+            <div style="display:grid; gap:14px;"><div class="button primary">立即调配</div><div class="button">查看详情 ›</div></div>
+          </aside>
+        </div>
+
+        <div class="lower">
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">临近截止指令</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>指令编号</th><th>剩余时间</th><th>截止时间</th><th>优先级</th><th>推荐操作</th></tr></thead>
+                <tbody>
+                  <tr><td>INS202507110010</td><td class="deadline">09分32秒</td><td>10:40</td><td><span class="tag tag-red">高</span></td><td><span class="more">优先处理</span></td></tr>
+                  <tr><td>INS202507110011</td><td class="deadline">18分15秒</td><td>10:49</td><td><span class="tag tag-red">高</span></td><td><span class="more">优先处理</span></td></tr>
+                  <tr><td>INS202507110012</td><td class="deadline">25分48秒</td><td>10:57</td><td><span class="tag tag-orange">中</span></td><td><span class="more">批量处理</span></td></tr>
+                  <tr><td>INS202507110013</td><td class="deadline">32分21秒</td><td>11:04</td><td><span class="tag tag-orange">中</span></td><td><span class="more">监控处理</span></td></tr>
+                  <tr><td>INS202507110014</td><td class="ok-time">45分10秒</td><td>11:17</td><td><span class="tag tag-green">低</span></td><td><span class="more">正常处理</span></td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>⏱ 共 <strong style="color:#df1f2d">78</strong> 条临近截止指令，其中高优先级 <strong style="color:#df1f2d">32</strong> 条</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">指令停顿与积压监测</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>指令编号</th><th>停顿时长</th><th>当前环节</th><th>责任组</th><th>建议动作</th></tr></thead>
+                <tbody>
+                  <tr><td>INS202507110031</td><td class="deadline">25分12秒</td><td>账户核验</td><td>账户服务组</td><td><span class="tag tag-blue">推进处理</span></td></tr>
+                  <tr><td>INS202507110032</td><td class="deadline">18分05秒</td><td>经办录入</td><td>数据清算组</td><td><span class="tag tag-blue">复核客户</span></td></tr>
+                  <tr><td>INS202507110033</td><td class="deadline">15分38秒</td><td>指令复核</td><td>规则校验组</td><td><span class="tag tag-blue">任务前置</span></td></tr>
+                  <tr><td>INS202507110034</td><td class="deadline">12分07秒</td><td>清算确认</td><td>清算执行组</td><td><span class="tag tag-blue">加急处理</span></td></tr>
+                  <tr><td>INS202507110035</td><td class="deadline">11分22秒</td><td>会计入账</td><td>会计处理组</td><td><span class="tag tag-blue">流程唤醒</span></td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>⏱ 共 <strong style="color:#df1f2d">31</strong> 条停顿积压指令</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">智能推荐方案</span><span class="more">刷新推荐 ⟳</span></div>
+            <div class="panel-body">
+              <div class="notice">
+                <div class="notice-row"><span class="dot"></span><span>当前团队尚有待处理 <strong>86</strong> 笔，预计未来 2 小时新增 <strong>34</strong> 笔</span><span class="tag tag-red">容量超限</span></div>
+                <div class="notice-row"><span class="dot" style="background:#df1f2d"></span><span>建议增加 <strong>2</strong> 名人力支持，优先处理投资类与赎回类指令</span><span class="tag tag-blue">调度建议</span></div>
+                <div class="notice-row"><span class="dot" style="background:#f58b00"></span><span>建议优先关注：王佳怡、陈美琪、账户核验组</span><span class="tag tag-orange">重点跟进</span></div>
+                <div class="notice-row"><span class="dot" style="background:#16a06b"></span><span>预计调配后平均处理时效可下降 <strong>67%</strong></span><span class="tag tag-green">效率提升</span></div>
+              </div>
+              <div class="charts">
+                <div>
+                  <div class="mini-row"><span>李思远</span><div class="bar load-high"><span style="width:85%"></span></div><b>85%</b></div>
+                  <div class="mini-row"><span>刘思晴</span><div class="bar"><span style="width:66%"></span></div><b>66%</b></div>
+                  <div class="mini-row"><span>赵子墨</span><div class="bar"><span style="width:54%"></span></div><b>54%</b></div>
+                  <div class="mini-row"><span>王佳怡</span><div class="bar"><span style="width:52%"></span></div><b>52%</b></div>
+                  <div class="mini-row"><span>陈美琪</span><div class="bar"><span style="width:42%"></span></div><b>42%</b></div>
+                </div>
+                <div><div class="donut"></div></div>
+              </div>
+              <div class="legend" style="grid-template-columns:repeat(3,1fr); display:grid; margin-top:10px;">
+                <span><i style="background:#e51f2a"></i>容量超限 35.7%</span><span><i style="background:#f68b1f"></i>可能违约 24.3%</span><span><i style="background:#1677ff"></i>指令停顿 20.0%</span>
+                <span><i style="background:#21a67a"></i>临近截止 11.4%</span><span><i style="background:#7654d8"></i>业务堆积 8.6%</span><span></span>
+              </div>
+            </div>
+            <div class="actions"><div class="button primary">启动支援</div><div class="button" style="border-color:#1677ff;color:#1677ff">批量处理</div></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="content dashboard-view" id="view-employee">
+        <div class="page-title">
+          <h1>员工侧看板</h1>
+          <div class="fresh">数据更新于 2026-07-11 10:30:00　⟳</div>
+        </div>
+        <div class="kpis">
+          <article class="kpi"><div class="kpi-icon" style="background:#1677ff">▤</div><div><div class="kpi-label">全部待办总量 ⓘ</div><div class="kpi-value">1,286</div><div class="kpi-sub">较昨日 <span class="down">+128 ↑ +11.07%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#ff7a00">◇</div><div><div class="kpi-label">今日新接单 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="down">+4 ↑ +28.57%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#df1f2d">!</div><div><div class="kpi-label">疑似漏单 ⓘ</div><div class="kpi-value">3</div><div class="kpi-sub">较昨日 <span class="down">+1 ↑ +50.00%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#6d3be6">!</div><div><div class="kpi-label">可能超时风险 ⓘ</div><div class="kpi-value">7</div><div class="kpi-sub">较昨日 <span class="down">+2 ↑ +40.00%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#16a06b">◔</div><div><div class="kpi-label">预计最晚完成 ⓘ</div><div class="kpi-value">今日 19:20</div><div class="kpi-sub">较昨日 <span class="down">+22分 ↑ +2.20%</span></div></div></article>
+        </div>
+
+        <div class="employee-layout">
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">任务推送与待办列表</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>任务编号</th><th>业务类型</th><th>推送时间</th><th>当前节点</th><th>优先级</th><th>预计完成时间</th><th>状态</th></tr></thead>
+                <tbody>
+                  <tr><td>INS202507110021</td><td>证券清算</td><td>05-20 10:10</td><td>权益核验</td><td><span class="tag tag-red">高</span></td><td>05-20 11:20</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110022</td><td>资金清算</td><td>05-20 09:25</td><td>等待审核</td><td><span class="tag tag-red">高</span></td><td>05-20 11:00</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110023</td><td>债券确认</td><td>05-20 08:53</td><td>异常处理中</td><td><span class="tag tag-orange">中</span></td><td>05-20 12:10</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110024</td><td>回单校对</td><td>05-20 08:30</td><td>补充处理</td><td><span class="tag tag-red">高</span></td><td>05-20 12:50</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110025</td><td>托付结算</td><td>05-20 07:31</td><td>流程处理中</td><td><span class="tag tag-orange">中</span></td><td>05-20 13:00</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110026</td><td>估值核验</td><td>05-20 07:40</td><td>等待确认</td><td><span class="tag tag-green">低</span></td><td>05-20 14:30</td><td><span class="tag tag-blue">正常处理</span></td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>共 <strong>6</strong> 条记录</span><span>高优先级 <strong style="color:#df1f2d">3</strong> 条</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">今日任务趋势图</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <div class="line-chart">
+                <svg viewBox="0 0 520 150" preserveAspectRatio="none">
+                  <polyline points="0,115 65,96 130,70 195,55 260,36 325,25 390,45 455,62 520,82" fill="none" stroke="#1677ff" stroke-width="4"/>
+                  <polyline points="0,126 65,108 130,86 195,61 260,48 325,36 390,53 455,72 520,90" fill="none" stroke="#16a06b" stroke-width="4"/>
+                  <g fill="#fff" stroke="#1677ff" stroke-width="3"><circle cx="0" cy="115" r="5"/><circle cx="130" cy="70" r="5"/><circle cx="260" cy="36" r="5"/><circle cx="390" cy="45" r="5"/><circle cx="520" cy="82" r="5"/></g>
+                </svg>
+                <div class="axis-labels"><span>09:00</span><span>10:00</span><span>11:00</span><span>12:00</span><span>13:00</span><span>14:00</span><span>15:00</span><span>16:00</span><span>17:00</span></div>
+              </div>
+              <div class="summary"><span>统计周期：今日</span><span><strong style="color:#1677ff">待处理任务</strong> / <strong style="color:#16a06b">已完成任务</strong></span></div>
+            </div>
+          </section>
+
+          <aside class="alert-card">
+            <div>
+              <div class="alert-title">▲ 风险预警</div>
+              <div class="alert-main"><b>7</b>条<br />任务可能超时</div>
+              <div style="color:#526072;font-weight:700;">其中 <strong style="color:#df1f2d">3</strong> 条为高优先级</div>
+            </div>
+            <div style="display:grid; gap:14px;"><div class="button primary">立即处理</div><div class="button">查看详情 ›</div></div>
+          </aside>
+        </div>
+
+        <div class="lower">
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">临近截止任务</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>任务编号</th><th>剩余时间</th><th>截止时间</th><th>优先级</th><th>建议动作</th></tr></thead>
+                <tbody>
+                  <tr><td>INS202507110041</td><td class="deadline">18分20秒</td><td>10:45</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110042</td><td class="deadline">42分15秒</td><td>11:10</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-orange">优先处理</span></td></tr>
+                  <tr><td>INS202507110043</td><td class="deadline">1时25分</td><td>11:55</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-blue">优先处理</span></td></tr>
+                  <tr><td>INS202507110044</td><td class="ok-time">2时40分</td><td>13:10</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-blue">优先处理</span></td></tr>
+                  <tr><td>INS202507110045</td><td class="ok-time">4时10分</td><td>14:40</td><td><span class="tag tag-green">低</span></td><td><span class="tag tag-blue">正常处理</span></td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>共 <strong style="color:#df1f2d">5</strong> 条临近截止任务，其中高优先级 <strong style="color:#df1f2d">2</strong> 条</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">漏单与异常提醒</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>任务编号</th><th>异常类型</th><th>触发原因</th><th>影响程度</th><th>建议动作</th><th>状态</th></tr></thead>
+                <tbody>
+                  <tr><td>INS202507110051</td><td><span class="tag tag-red">疑似漏单</span></td><td>超过 15 分钟未响应</td><td>高</td><td>立即补充处理</td><td><span class="tag tag-red">待处理</span></td></tr>
+                  <tr><td>INS202507110052</td><td><span class="tag tag-orange">风险超时</span></td><td>清算时限临近</td><td>高</td><td>优先转办</td><td><span class="tag tag-blue">处理中</span></td></tr>
+                  <tr><td>INS202507110053</td><td><span class="tag tag-orange">资料缺失</span></td><td>附件清晰度不足</td><td>中</td><td>补充材料</td><td><span class="tag tag-red">待核实</span></td></tr>
+                  <tr><td>INS202507110054</td><td><span class="tag tag-blue">停顿预警</span></td><td>复核节点停留</td><td>中</td><td>询问原因</td><td><span class="tag tag-orange">需确认</span></td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>共 <strong style="color:#df1f2d">5</strong> 条异常记录</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">智能处理建议</span><span class="more">规则推荐 ⟳</span></div>
+            <div class="panel-body">
+              <div class="notice">
+                <div class="notice-row"><span class="dot" style="background:#df1f2d"></span><span>当前有 <strong>3</strong> 条关键漏单，请立即查看指令池</span><span class="tag tag-red">最高优先</span></div>
+                <div class="notice-row"><span class="dot"></span><span>当前有 <strong>7</strong> 条任务可能超时，建议优先处理高优先级任务</span><span class="tag tag-blue">处理建议</span></div>
+                <div class="notice-row"><span class="dot" style="background:#f58b00"></span><span>今日已处理 <strong>18</strong> 条任务，后续建议增加 1 人协助处理</span><span class="tag tag-orange">协同建议</span></div>
+                <div class="notice-row"><span class="dot" style="background:#16a06b"></span><span>未来 <strong>2</strong> 小时预计任务压力将下降</span><span class="tag tag-green">趋势判断</span></div>
+              </div>
+              <div class="charts">
+                <div>
+                  <div class="mini-row"><span>流转中</span><div class="bar"><span style="width:68%"></span></div><b>24</b></div>
+                  <div class="mini-row"><span>待复核</span><div class="bar load-high"><span style="width:82%"></span></div><b>38</b></div>
+                  <div class="mini-row"><span>待补录</span><div class="bar"><span style="width:40%"></span></div><b>16</b></div>
+                  <div class="mini-row"><span>已完成</span><div class="bar"><span style="width:31%"></span></div><b>10</b></div>
+                </div>
+                <div><div class="donut"></div></div>
+              </div>
+            </div>
+            <div class="actions"><div class="button primary">启动支援</div><div class="button" style="border-color:#1677ff;color:#1677ff">批量处理</div></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="content dashboard-view" id="view-customer">
+        <div class="page-title">
+          <h1>客户看板</h1>
+          <div class="fresh">数据更新于 2026-07-11 10:30:00　⟳</div>
+        </div>
+        <div class="kpis">
+          <article class="kpi"><div class="kpi-icon" style="background:#1677ff">▤</div><div><div class="kpi-label">全部指令总量 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="up">-3 ↓ -14.29%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#f58b00">⌛</div><div><div class="kpi-label">处理中 ⓘ</div><div class="kpi-value">6</div><div class="kpi-sub">较昨日 <span class="up">+1 ↓ +14.29%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#16a06b">✓</div><div><div class="kpi-label">已完成 ⓘ</div><div class="kpi-value">10</div><div class="kpi-sub">较昨日 <span class="down">-2 ↑ -25.00%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#df1f2d">!</div><div><div class="kpi-label">未通过 / 合规拦截 ⓘ</div><div class="kpi-value">2</div><div class="kpi-sub">较昨日 <span class="down">+1 ↑ +100.00%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#6d3be6">◔</div><div><div class="kpi-label">预计全部完成 ⓘ</div><div class="kpi-value">今日 16:30</div><div class="kpi-sub">较昨日 <span class="up">-40分 ↓ -29.63%</span></div></div></article>
+        </div>
+
+        <div class="customer-layout">
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">我的清算指令进度</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>指令编号</th><th>业务类型</th><th>提交时间</th><th>当前节点</th><th>处理进度</th><th>预计完成时间</th><th>状态</th></tr></thead>
+                <tbody>
+                  <tr><td>CL202507110001</td><td>证券清算</td><td>05-20 09:15</td><td>资料核验中</td><td><div class="bar"><span style="width:67%"></span></div></td><td>05-20 12:00</td><td><span class="tag tag-blue">处理中</span></td></tr>
+                  <tr><td>CL202507110002</td><td>基金赎回</td><td>05-20 08:40</td><td>清算处理中</td><td><div class="bar"><span style="width:50%"></span></div></td><td>05-20 15:50</td><td><span class="tag tag-blue">处理中</span></td></tr>
+                  <tr><td>CL202507110003</td><td>利息分配</td><td>05-19 16:45</td><td>待审批</td><td><div class="bar"><span style="width:80%"></span></div></td><td>05-20 11:00</td><td><span class="tag tag-blue">处理中</span></td></tr>
+                  <tr><td>CL202507110004</td><td>证券清算</td><td>05-19 14:22</td><td>清算完成</td><td><div class="bar"><span style="width:100%"></span></div></td><td>05-19 11:10</td><td><span class="tag tag-green">已完成</span></td></tr>
+                  <tr><td>CL202507110005</td><td>红利再投</td><td>05-19 11:10</td><td>清算完成</td><td><div class="bar"><span style="width:100%"></span></div></td><td>05-19 12:35</td><td><span class="tag tag-green">已完成</span></td></tr>
+                  <tr><td>CL202507110006</td><td>资金划拨</td><td>05-18 17:30</td><td>待客户补充</td><td><div class="bar load-high"><span style="width:33%"></span></div></td><td>05-20 13:30</td><td><span class="tag tag-orange">待处理</span></td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>共 <strong>6</strong> 条记录</span><span>需客户处理 <strong style="color:#df1f2d">3</strong> 条</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">未通过指令提醒（需客户处理）</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>指令编号</th><th>异常类型</th><th>未通过原因</th><th>客户处理</th><th>影响范围</th><th>当前状态</th></tr></thead>
+                <tbody>
+                  <tr><td>CL202507110013</td><td><span class="tag tag-red">信息不完整</span></td><td>账户信息不完整</td><td>补充账户资料</td><td>全域</td><td><span class="tag tag-red">未通过</span></td></tr>
+                  <tr><td>CL202507110002</td><td><span class="tag tag-orange">附件缺失</span></td><td>附件缺失（委托书）</td><td>上传授权附件</td><td>全域</td><td><span class="tag tag-orange">待补充</span></td></tr>
+                  <tr><td>CL202507110007</td><td><span class="tag tag-blue">授权过期</span></td><td>授权文件已过期</td><td>更新授权文件</td><td>全域</td><td><span class="tag tag-orange">待补充</span></td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>共 <strong style="color:#df1f2d">3</strong> 条未处理记录</span></div>
+            </div>
+          </section>
+
+          <aside class="alert-card purple-card">
+            <div>
+              <div class="alert-title">◔ 处理时间提醒</div>
+              <div class="alert-main">预计全部完成<br /><b>今日 16:30</b></div>
+              <div style="color:#526072;font-weight:700;">下一笔预计处理 <strong>11:20</strong></div>
+            </div>
+            <div style="display:grid; gap:14px;"><div class="button primary">查看进度</div><div class="button" style="border-color:#6d3be6;color:#6d3be6">查看详情 ›</div></div>
+          </aside>
+        </div>
+
+        <div class="lower">
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">临近截止指令</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>指令编号</th><th>剩余时间</th><th>截止时间</th><th>优先级</th><th>建议操作</th></tr></thead>
+                <tbody>
+                  <tr><td>CL202507110010</td><td class="deadline">1时25分</td><td>05-20 12:00</td><td><span class="tag tag-red">高</span></td><td><span class="more">尽快补充资料</span></td></tr>
+                  <tr><td>CL202507110011</td><td class="deadline">2时45分</td><td>05-20 13:30</td><td><span class="tag tag-red">高</span></td><td><span class="more">上传授权文件</span></td></tr>
+                  <tr><td>CL202507110012</td><td class="ok-time">5时10分</td><td>05-20 16:00</td><td><span class="tag tag-orange">中</span></td><td><span class="more">确认回单信息</span></td></tr>
+                  <tr><td>CL202507110013</td><td class="ok-time">9时30分</td><td>05-20 20:30</td><td><span class="tag tag-green">低</span></td><td><span class="more">晚交清单</span></td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>共 <strong>4</strong> 条临近截止指令</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">指令状态跟踪</span><span class="more">查看全部 ›</span></div>
+            <div class="panel-body">
+              <div class="stage-track">
+                <div class="stage done">资料提交<br /><strong>已完成</strong></div>
+                <div class="stage done">托管初审<br /><strong>已完成</strong></div>
+                <div class="stage now">清算处理中<br /><strong>当前节点</strong></div>
+                <div class="stage">复核确认<br /><strong>等待处理</strong></div>
+                <div class="stage">结果回传<br /><strong>下一步</strong></div>
+              </div>
+              <table style="margin-top:14px;">
+                <thead><tr><th>指令编号</th><th>当前节点</th><th>最新进展</th><th>责任状态</th><th>下一步</th></tr></thead>
+                <tbody>
+                  <tr><td>CL202507110001</td><td>资料核验中</td><td>材料较完整，预计10分钟完成</td><td><span class="tag tag-blue">处理中</span></td><td>等待清算完成</td></tr>
+                  <tr><td>CL202507110002</td><td>清算处理中</td><td>系统清算处理中</td><td><span class="tag tag-blue">处理中</span></td><td>等待清算完成</td></tr>
+                  <tr><td>CL202507110004</td><td>清算完成</td><td>清算结果已回传</td><td><span class="tag tag-green">已完成</span></td><td>查看结果</td></tr>
+                </tbody>
+              </table>
+              <div class="summary"><span>共 <strong>5</strong> 条在途指令</span></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><span class="panel-title">智能服务建议</span><span class="more">刷新推荐 ⟳</span></div>
+            <div class="panel-body">
+              <div class="notice">
+                <div class="notice-row"><span class="dot"></span><span>当前有 <strong>2</strong> 条指令未通过，建议优先补充资料</span><span class="tag tag-red">需处理</span></div>
+                <div class="notice-row"><span class="dot" style="background:#1677ff"></span><span>预计未来 <strong>2</strong> 小时内完成 <strong>4</strong> 条指令</span><span class="tag tag-blue">进度预估</span></div>
+                <div class="notice-row"><span class="dot" style="background:#f58b00"></span><span><strong>1</strong> 条指令授权过期，请及时确认</span><span class="tag tag-orange">资料提醒</span></div>
+                <div class="notice-row"><span class="dot" style="background:#16a06b"></span><span>可导出今日指令处理状态表用于内部同步</span><span class="tag tag-green">服务建议</span></div>
+              </div>
+              <div class="charts">
+                <div>
+                  <div class="mini-row"><span>处理中</span><div class="bar"><span style="width:63%"></span></div><b>6</b></div>
+                  <div class="mini-row"><span>已完成</span><div class="bar"><span style="width:56%"></span></div><b>10</b></div>
+                  <div class="mini-row"><span>待补充</span><div class="bar load-high"><span style="width:44%"></span></div><b>3</b></div>
+                  <div class="mini-row"><span>未通过</span><div class="bar load-high"><span style="width:22%"></span></div><b>2</b></div>
+                </div>
+                <div><div class="donut"></div></div>
+              </div>
+            </div>
+            <div class="actions"><div class="button" style="border-color:#1677ff;color:#1677ff">导出报告</div><div class="button" style="border-color:#1677ff;color:#1677ff">批量导出</div></div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const viewMeta = {
+      manager: { title: "管理侧运营看板", role: "运营团队-团队长", badge: "12", avatar: "张", user: "张振鹏 ▾" },
+      employee: { title: "员工侧看板", role: "运营团队-员工视角", badge: "8", avatar: "张", user: "张媛明 ▾" },
+      customer: { title: "客户看板", role: "客户服务-客户视角", badge: "3", avatar: "沈", user: "沈先生 ▾" }
+    };
+
+    document.querySelectorAll("[data-view]").forEach((item) => {
+      item.addEventListener("click", () => {
+        const view = item.dataset.view;
+        document.querySelectorAll("[data-view]").forEach((nav) => nav.classList.toggle("active", nav === item));
+        document.querySelectorAll(".dashboard-view").forEach((panel) => panel.classList.toggle("active", panel.id === `view-${view}`));
+        const meta = viewMeta[view];
+        document.getElementById("crumbTitle").textContent = meta.title;
+        document.getElementById("roleSelect").textContent = meta.role;
+        document.getElementById("noticeBadge").textContent = meta.badge;
+        document.getElementById("avatarName").textContent = meta.avatar;
+        document.getElementById("userName").textContent = meta.user;
+      });
+    });
+  </script>
+</body>
+</html>
