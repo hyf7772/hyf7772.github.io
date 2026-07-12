@@ -66,7 +66,7 @@
     .employee-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .customer-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .kpi { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; min-height: 104px; box-shadow: 0 5px 16px rgba(24, 53, 90, 0.04); display: grid; grid-template-columns: 46px 1fr; gap: 12px; align-items: center; }
-    .kpi-icon { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-size: 23px; font-weight: 800; }
+    .kpi-icon { width: 48px; height: 48px; display: block; object-fit: contain; align-self: center; justify-self: center; }
     .kpi-label { color: #3d4b5f; font-size: 13px; font-weight: 700; display: flex; gap: 4px; align-items: center; }
     .kpi-value { font-size: 30px; line-height: 1.1; margin: 6px 0; font-weight: 800; }
     .kpi-sub { font-size: 12px; color: var(--muted); }
@@ -234,11 +234,11 @@
         </div>
 
         <div class="kpis">
-          <article class="kpi"><div class="kpi-icon" style="background:#1677ff"></div><div><div class="kpi-label">全量待办总量 ⓘ</div><div class="kpi-value">1,256</div><div class="kpi-sub">较昨日 <span class="up">-128 ↓ -11.35%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#f58b00"></div><div><div class="kpi-label">容量超限预警 ⓘ</div><div class="kpi-value">5</div><div class="kpi-sub">较昨日 <span class="up">-2 ↓ -20.00%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#df1f2d"></div><div><div class="kpi-label">可能违约预警 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="down">+4 ↑ +28.57%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#7654d8"></div><div><div class="kpi-label">指令停顿异常 ⓘ</div><div class="kpi-value">31</div><div class="kpi-sub">较昨日 <span class="down">+7 ↑ +29.17%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#16a06b"></div><div><div class="kpi-label">平均处理时效 ⓘ</div><div class="kpi-value">3分48秒</div><div class="kpi-sub">较昨日 <span class="up">-32秒 ↓ -23.53%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/file.svg" alt="" /><div><div class="kpi-label">全量待办总量 ⓘ</div><div class="kpi-value">1,256</div><div class="kpi-sub">较昨日 <span class="up">-128 ↓ -11.35%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/processing.svg" alt="" /><div><div class="kpi-label">容量超限预警 ⓘ</div><div class="kpi-value">5</div><div class="kpi-sub">较昨日 <span class="up">-2 ↓ -20.00%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/warning.svg" alt="" /><div><div class="kpi-label">可能违约预警 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="down">+4 ↑ +28.57%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/paused.svg" alt="" /><div><div class="kpi-label">指令停顿异常 ⓘ</div><div class="kpi-value">31</div><div class="kpi-sub">较昨日 <span class="down">+7 ↑ +29.17%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/start-time.svg" alt="" /><div><div class="kpi-label">平均处理时效 ⓘ</div><div class="kpi-value">3分48秒</div><div class="kpi-sub">较昨日 <span class="up">-32秒 ↓ -23.53%</span></div></div></article>
         </div>
 
         <div class="grid">
@@ -362,10 +362,10 @@
           <div class="fresh">数据更新于 2026-07-07 21:30:00　⟳</div>
         </div>
         <div class="kpis employee-kpis">
-          <article class="kpi"><div class="kpi-icon" style="background:#1677ff">▤</div><div><div class="kpi-label">全部待办总量 ⓘ</div><div class="kpi-value">286</div><div class="kpi-sub">较昨日 <span class="down">+128 ↑ +11.07%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#ff7a00">◇</div><div><div class="kpi-label">今日新接单 ⓘ</div><div class="kpi-value">218</div><div class="kpi-sub">较昨日 <span class="down">+89 ↑ +28.57%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#df1f2d">!</div><div><div class="kpi-label">疑似漏单 ⓘ</div><div class="kpi-value">3</div><div class="kpi-sub">较昨日 <span class="down">+1 ↑ +50.00%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#6d3be6">!</div><div><div class="kpi-label">可能超时风险 ⓘ</div><div class="kpi-value">7</div><div class="kpi-sub">较昨日 <span class="down">+2 ↑ +40.00%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/file.svg" alt="" /><div><div class="kpi-label">全部待办总量 ⓘ</div><div class="kpi-value">286</div><div class="kpi-sub">较昨日 <span class="down">+128 ↑ +11.07%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/processing.svg" alt="" /><div><div class="kpi-label">今日新接单 ⓘ</div><div class="kpi-value">218</div><div class="kpi-sub">较昨日 <span class="down">+89 ↑ +28.57%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/warning.svg" alt="" /><div><div class="kpi-label">疑似漏单 ⓘ</div><div class="kpi-value">3</div><div class="kpi-sub">较昨日 <span class="down">+1 ↑ +50.00%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/possible-timeout.svg" alt="" /><div><div class="kpi-label">可能超时风险 ⓘ</div><div class="kpi-value">7</div><div class="kpi-sub">较昨日 <span class="down">+2 ↑ +40.00%</span></div></div></article>
         </div>
 
         <div class="employee-layout">
@@ -473,10 +473,10 @@
           <div class="fresh">数据更新于 2026-07-07 21:30:00　⟳</div>
         </div>
         <div class="kpis customer-kpis">
-          <article class="kpi"><div class="kpi-icon" style="background:#1677ff">▤</div><div><div class="kpi-label">全部指令总量 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="up">-3 ↓ -14.29%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#f58b00">⌛</div><div><div class="kpi-label">处理中 ⓘ</div><div class="kpi-value">6</div><div class="kpi-sub">较昨日 <span class="up">+1 ↓ +14.29%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#16a06b">✓</div><div><div class="kpi-label">已完成 ⓘ</div><div class="kpi-value">10</div><div class="kpi-sub">较昨日 <span class="down">-2 ↑ -25.00%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#df1f2d">!</div><div><div class="kpi-label">未通过 / 合规拦截 ⓘ</div><div class="kpi-value">2</div><div class="kpi-sub">较昨日 <span class="down">+1 ↑ +100.00%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/file.svg" alt="" /><div><div class="kpi-label">全部指令总量 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="up">-3 ↓ -14.29%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/processing.svg" alt="" /><div><div class="kpi-label">处理中 ⓘ</div><div class="kpi-value">6</div><div class="kpi-sub">较昨日 <span class="up">+1 ↓ +14.29%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/completed.svg" alt="" /><div><div class="kpi-label">已完成 ⓘ</div><div class="kpi-value">10</div><div class="kpi-sub">较昨日 <span class="down">-2 ↑ -25.00%</span></div></div></article>
+          <article class="kpi"><img class="kpi-icon" src="images/warning.svg" alt="" /><div><div class="kpi-label">未通过 / 合规拦截 ⓘ</div><div class="kpi-value">2</div><div class="kpi-sub">较昨日 <span class="down">+1 ↑ +100.00%</span></div></div></article>
         </div>
 
         <div class="customer-layout">
