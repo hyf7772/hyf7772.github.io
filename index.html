@@ -41,8 +41,7 @@
       padding: 22px 16px;
       position: relative;
     }
-    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; font-size: 17px; font-weight: 700; }
-    .logo-mark { width: 34px; height: 34px; border-radius: 8px; background: #fff; color: var(--brand); display: grid; place-items: center; font-weight: 900; }
+    .logo { display: flex; align-items: center; margin-bottom: 30px; font-size: 17px; font-weight: 700; padding-left: 4px; }
     .nav-item { height: 46px; display: flex; align-items: center; gap: 12px; padding: 0 14px; margin: 8px 0; border-radius: 6px; color: rgba(255,255,255,.82); font-weight: 600; cursor: pointer; border: 0; width: 100%; background: transparent; font: inherit; text-align: left; }
     .nav-item.active { background: var(--brand); color: #fff; box-shadow: 0 10px 22px rgba(215,25,32,.26); }
     .nav-icon { width: 22px; text-align: center; font-size: 16px; }
@@ -148,6 +147,40 @@
     .risk-item b { font-size: 19px; }
     .dashboard-view { display: none; }
     .dashboard-view.active { display: block; }
+    .rule-search { margin-bottom: 14px; }
+    .rule-search-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1.4fr auto auto; gap: 10px; align-items: end; }
+    .rule-field { display: grid; gap: 7px; min-width: 0; }
+    .rule-field span { color: var(--muted); font-size: 12px; font-weight: 700; }
+    .rule-select, .rule-input { width: 100%; height: 36px; border: 1px solid var(--line); border-radius: 7px; background: #fff; color: #243247; padding: 0 10px; font-size: 13px; outline: none; }
+    .rule-input::placeholder { color: #9aa7b8; }
+    .rules-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+    .rule-panel .panel-body { padding-top: 12px; }
+    .rule-tools { display: flex; align-items: center; gap: 10px; }
+    .mini-button { height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--brand); background: #fff; color: var(--brand); font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; }
+    .priority-panel { grid-column: 1 / -1; }
+    .rule-panel th:last-child, .rule-panel td:last-child { text-align: center; }
+    .rule-panel th:nth-last-child(2), .rule-panel td:nth-last-child(2) { text-align: center; }
+    .rule-panel th:nth-child(3), .rule-panel td:nth-child(3) { text-align: center; }
+    .priority-panel th:nth-child(3), .priority-panel td:nth-child(3) { text-align: center; padding-left: 6px; padding-right: 6px; }
+    .priority-panel th:nth-child(1), .priority-panel td:nth-child(1) { text-align: center; }
+    .priority-panel th:nth-child(2), .priority-panel td:nth-child(2) { text-align: center; padding-left: 43px; }
+    .priority-panel th:nth-child(4), .priority-panel td:nth-child(4), .priority-panel th:nth-child(5), .priority-panel td:nth-child(5), .priority-panel th:nth-child(6), .priority-panel td:nth-child(6), .priority-panel th:nth-child(7), .priority-panel td:nth-child(7) { text-align: center; }
+    .rule-op-cell { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-width: 64px; }
+    .rule-op { color: var(--blue); font-weight: 800; }
+    .rule-op.delete { color: var(--red); }
+    .weight { color: var(--blue); font-weight: 900; }
+    .rule-order { color: #253248; font-weight: 700; line-height: 1.45; }
+    .weight-summary { display: flex; gap: 10px; align-items: center; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .weight-summary b { color: var(--green); font-size: 16px; }
+    .rule-footer { color: #526072; font-size: 12px; display: flex; justify-content: flex-start; gap: 3px; align-items: center; padding-top: 10px; }
+    .priority-footer { justify-content: space-between; }
+    .rule-footer strong { color: var(--red); }
+    .rule-note { margin-top: 14px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .rule-note-item { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 13px 16px; }
+    .rule-note-item span { display: block; color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+    .rule-note-item b { color: #253248; font-size: 16px; }
+    .rule-note-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+    .rule-note-actions .button { flex: 1; padding: 0 12px; }
     .employee-layout { display: grid; grid-template-columns: 1.12fr 1.08fr 0.48fr; gap: 14px; }
     .customer-layout { display: grid; grid-template-columns: 1.18fr 1.08fr 0.46fr; gap: 14px; }
     .span-2 { grid-column: span 2; }
@@ -169,7 +202,8 @@
     @media (max-width: 1280px) {
       .app { grid-template-columns: 196px 1fr; }
       .kpis { grid-template-columns: repeat(3, 1fr); }
-      .grid, .lower, .employee-layout, .customer-layout { grid-template-columns: 1fr; }
+      .grid, .lower, .employee-layout, .customer-layout, .rules-layout, .rule-note { grid-template-columns: 1fr; }
+      .rule-search-grid { grid-template-columns: repeat(2, 1fr); }
       .wide { grid-column: auto; }
       .span-2 { grid-column: auto; }
       .main { min-width: 0; }
@@ -179,11 +213,11 @@
 <body>
   <div class="app">
     <aside class="sidebar">
-      <div class="logo"><div class="logo-mark">AI</div><span>资产托管AI指令清算平台</span></div>
-      <button class="nav-item active" data-view="manager"><span class="nav-icon">▦</span><span>管理侧看板</span></button>
-      <button class="nav-item" data-view="employee"><span class="nav-icon">▣</span><span>员工侧看板</span></button>
-      <button class="nav-item" data-view="customer"><span class="nav-icon">▥</span><span>客户侧看板</span></button>
-      <button class="nav-item"><span class="nav-icon">⚙</span><span>规则配置</span></button>
+      <div class="logo"><span>资产托管AI指令清算平台</span></div>
+      <button class="nav-item active" data-view="manager"><span class="nav-icon"></span><span>管理侧看板</span></button>
+      <button class="nav-item" data-view="employee"><span class="nav-icon"></span><span>员工侧看板</span></button>
+      <button class="nav-item" data-view="customer"><span class="nav-icon"></span><span>客户侧看板</span></button>
+      <button class="nav-item" data-view="rules"><span class="nav-icon">⚙</span><span>规则配置</span></button>
       <div class="collapse">‹ 收起菜单</div>
     </aside>
 
@@ -201,10 +235,10 @@
 
         <div class="kpis">
           <article class="kpi"><div class="kpi-icon" style="background:#1677ff"></div><div><div class="kpi-label">全量待办总量 ⓘ</div><div class="kpi-value">1,256</div><div class="kpi-sub">较昨日 <span class="up">-128 ↓ -11.35%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#f58b00"></div><div><div class="kpi-label">容量超限预警 ⓘ</div><div class="kpi-value">24</div><div class="kpi-sub">较昨日 <span class="up">-6 ↓ -20.00%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#f58b00"></div><div><div class="kpi-label">容量超限预警 ⓘ</div><div class="kpi-value">5</div><div class="kpi-sub">较昨日 <span class="up">-2 ↓ -20.00%</span></div></div></article>
           <article class="kpi"><div class="kpi-icon" style="background:#df1f2d"></div><div><div class="kpi-label">可能违约预警 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="down">+4 ↑ +28.57%</span></div></div></article>
           <article class="kpi"><div class="kpi-icon" style="background:#7654d8"></div><div><div class="kpi-label">指令停顿异常 ⓘ</div><div class="kpi-value">31</div><div class="kpi-sub">较昨日 <span class="down">+7 ↑ +29.17%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#16a06b"></div><div><div class="kpi-label">平均处理时效 ⓘ</div><div class="kpi-value">1分48秒</div><div class="kpi-sub">较昨日 <span class="up">-32秒 ↓ -23.53%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#16a06b"></div><div><div class="kpi-label">平均处理时效 ⓘ</div><div class="kpi-value">3分48秒</div><div class="kpi-sub">较昨日 <span class="up">-32秒 ↓ -23.53%</span></div></div></article>
         </div>
 
         <div class="grid">
@@ -222,7 +256,7 @@
                   <tr><td><div class="person"><span class="face">刘</span>刘思晴</div></td><td>112</td><td><div class="bar"><span style="width:66%"></span></div></td><td>1分55秒</td><td><span class="tag tag-blue">清算协同</span></td></tr>
                 </tbody>
               </table>
-              <div class="summary"><span>团队总量：<strong>1,256</strong></span><span>平均负载率：<strong>54%</strong></span><span>平均处理时效：<strong>1分48秒</strong></span></div>
+              <div class="summary"><span>团队总量：<strong>1,256</strong></span><span>平均负载率：<strong>54%</strong></span><span>平均处理时效：<strong>3分48秒</strong></span></div>
             </div>
           </section>
 
@@ -230,7 +264,7 @@
             <div class="panel-head"><span class="panel-title">异常预警列表</span><span class="more">查看全部 ›</span></div>
             <div class="panel-body">
               <div class="risk-strip">
-                <div class="risk-item"><label>容量风险</label><b style="color:#f58b00">24</b> 条</div>
+                <div class="risk-item"><label>容量风险</label><b style="color:#f58b00">5</b> 条</div>
                 <div class="risk-item"><label>时限风险</label><b style="color:#df1f2d">18</b> 条</div>
                 <div class="risk-item"><label>停顿异常</label><b style="color:#7654d8">31</b> 条</div>
               </div>
@@ -325,11 +359,11 @@
       <section class="content dashboard-view" id="view-employee">
         <div class="page-title">
           <h1>员工侧看板</h1>
-          <div class="fresh">数据更新于 2026-07-11 10:30:00　⟳</div>
+          <div class="fresh">数据更新于 2026-07-07 21:30:00　⟳</div>
         </div>
         <div class="kpis employee-kpis">
-          <article class="kpi"><div class="kpi-icon" style="background:#1677ff">▤</div><div><div class="kpi-label">全部待办总量 ⓘ</div><div class="kpi-value">1,286</div><div class="kpi-sub">较昨日 <span class="down">+128 ↑ +11.07%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#ff7a00">◇</div><div><div class="kpi-label">今日新接单 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="down">+4 ↑ +28.57%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#1677ff">▤</div><div><div class="kpi-label">全部待办总量 ⓘ</div><div class="kpi-value">286</div><div class="kpi-sub">较昨日 <span class="down">+128 ↑ +11.07%</span></div></div></article>
+          <article class="kpi"><div class="kpi-icon" style="background:#ff7a00">◇</div><div><div class="kpi-label">今日新接单 ⓘ</div><div class="kpi-value">218</div><div class="kpi-sub">较昨日 <span class="down">+89 ↑ +28.57%</span></div></div></article>
           <article class="kpi"><div class="kpi-icon" style="background:#df1f2d">!</div><div><div class="kpi-label">疑似漏单 ⓘ</div><div class="kpi-value">3</div><div class="kpi-sub">较昨日 <span class="down">+1 ↑ +50.00%</span></div></div></article>
           <article class="kpi"><div class="kpi-icon" style="background:#6d3be6">!</div><div><div class="kpi-label">可能超时风险 ⓘ</div><div class="kpi-value">7</div><div class="kpi-sub">较昨日 <span class="down">+2 ↑ +40.00%</span></div></div></article>
         </div>
@@ -385,10 +419,10 @@
               <table>
                 <thead><tr><th>任务编号</th><th>剩余时间</th><th>截止时间</th><th>优先级</th><th>建议动作</th></tr></thead>
                 <tbody>
-                  <tr><td>INS202507110041</td><td class="deadline">18分20秒</td><td>10:45</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-red">立即处理</span></td></tr>
-                  <tr><td>INS202507110042</td><td class="deadline">42分15秒</td><td>11:10</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-orange">优先处理</span></td></tr>
-                  <tr><td>INS202507110043</td><td class="deadline">1时25分</td><td>11:55</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-blue">优先处理</span></td></tr>
-                  <tr><td>INS202507110044</td><td class="ok-time">2时40分</td><td>13:10</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-blue">优先处理</span></td></tr>
+                  <tr><td>INS202507110041</td><td class="deadline">10分15秒</td><td>10:45</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110042</td><td class="deadline">18分20秒</td><td>11:10</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-red">优先处理</span></td></tr>
+                  <tr><td>INS202507110043</td><td class="deadline">20分20秒</td><td>11:55</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-blue">优先处理</span></td></tr>
+                  <tr><td>INS202507110044</td><td class="ok-time">42分15秒</td><td>13:10</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-blue">优先处理</span></td></tr>
                   <tr><td>INS202507110045</td><td class="ok-time">4时10分</td><td>14:40</td><td><span class="tag tag-green">低</span></td><td><span class="tag tag-blue">正常处理</span></td></tr>
                 </tbody>
               </table>
@@ -436,7 +470,7 @@
       <section class="content dashboard-view" id="view-customer">
         <div class="page-title">
           <h1>客户看板</h1>
-          <div class="fresh">数据更新于 2026-07-11 10:30:00　⟳</div>
+          <div class="fresh">数据更新于 2026-07-07 21:30:00　⟳</div>
         </div>
         <div class="kpis customer-kpis">
           <article class="kpi"><div class="kpi-icon" style="background:#1677ff">▤</div><div><div class="kpi-label">全部指令总量 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="up">-3 ↓ -14.29%</span></div></div></article>
@@ -551,13 +585,129 @@
           </section>
         </div>
       </section>
+
+      <section class="content dashboard-view" id="view-rules">
+        <div class="page-title">
+          <h1>规则配置</h1>
+        </div>
+
+        <section class="panel rule-search">
+          <div class="panel-body">
+            <div class="rule-search-grid">
+              <label class="rule-field">
+                <span>规则类型</span>
+                <select class="rule-select">
+                  <option>全部规则</option>
+                  <option>分类关键词</option>
+                  <option>风险设置</option>
+                  <option>优先级设置</option>
+                </select>
+              </label>
+              <label class="rule-field">
+                <span>指令类型</span>
+                <select class="rule-select">
+                  <option>全部指令类型</option>
+                  <option>投资类</option>
+                  <option>分配类</option>
+                  <option>资金归集</option>
+                  <option>费用类</option>
+                </select>
+              </label>
+              <label class="rule-field">
+                <span>状态</span>
+                <select class="rule-select">
+                  <option>全部状态</option>
+                  <option>启用</option>
+                  <option>禁用</option>
+                </select>
+              </label>
+              <label class="rule-field">
+                <span>关键词</span>
+                <input class="rule-input" value="清算 / 截止 / 授权" />
+              </label>
+              <div class="button primary">查询</div>
+              <div class="button">重置</div>
+            </div>
+          </div>
+        </section>
+
+        <div class="rules-layout">
+          <section class="panel rule-panel">
+            <div class="panel-head">
+              <div class="panel-title">分类关键词配置</div>
+              <div class="rule-tools"><span class="mini-button">新增关键词</span></div>
+            </div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>指令类型</th><th>关键词</th><th>状态</th><th>更新时间</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr><td><b>投资类</b></td><td>基金投资、非标投资、理财投资、网下申购</td><td><span class="tag tag-green">启用</span></td><td>2026-07-12</td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>资金归集</b></td><td>他行活期调回、保证金调回、银证转账</td><td><span class="tag tag-green">启用</span></td><td>2026-07-12</td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>保证金划转</b></td><td>银期转账、机构间入金、机构间出金</td><td><span class="tag tag-green">启用</span></td><td>2026-07-11</td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>分配类</b></td><td>分红、赎回、本金及收益分配、ETF轧差款</td><td><span class="tag tag-green">启用</span></td><td>2026-07-11</td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>费用类</b></td><td>固定费用、业绩报酬、银行间费用、其他费用</td><td><span class="tag tag-green">启用</span></td><td>2026-07-10</td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                </tbody>
+              </table>
+              <div class="rule-footer">共 <strong>5</strong> 条记录</div>
+            </div>
+          </section>
+
+          <section class="panel rule-panel">
+            <div class="panel-head">
+              <div class="panel-title">风险设置</div>
+              <div class="rule-tools"><span class="mini-button">新增规则</span></div>
+            </div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>规则名称</th><th>判断条件</th><th>阈值</th><th>风险等级</th><th>状态</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr><td><b>临近截止预警</b></td><td>剩余处理时间小于阈值且当前节点未完成</td><td>≤30分钟</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-green">启用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>指令停顿异常</b></td><td>当前节点停留时间超过标准节点时长</td><td>≥20分钟</td><td><span class="tag tag-orange">中</span></td><td><span class="tag tag-green">启用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>容量超限预警</b></td><td>待处理指令数量超过团队承载阈值</td><td>≥80笔</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-green">启用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>合规拦截提示</b></td><td>附件缺失、授权过期或账户信息不完整</td><td>命中即触发</td><td><span class="tag tag-red">高</span></td><td><span class="tag tag-green">启用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>低风险提示</b></td><td>普通清算指令当日截止且流程正常</td><td>当日16:00前</td><td><span class="tag tag-green">低</span></td><td><span class="tag tag-orange">禁用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                </tbody>
+              </table>
+              <div class="rule-footer">共 <strong>5</strong> 条规则</div>
+            </div>
+          </section>
+
+          <section class="panel rule-panel priority-panel">
+            <div class="panel-head">
+              <div class="panel-title">优先级设置规则</div>
+              <div class="rule-tools"><span class="mini-button">新增规则</span></div>
+            </div>
+            <div class="panel-body">
+              <table>
+                <thead><tr><th>规则名称</th><th>权重因子</th><th>排序规则</th><th>适用范围</th><th>生效节点</th><th>今日命中次数</th><th>更新时间</th><th>状态</th><th>操作</th></tr></thead>
+                <tbody>
+                  <tr><td><b>客户分层优先级规则</b></td><td><span class="tag tag-blue">0.30</span></td><td class="rule-order">托管超核心客户 &gt; 托管核心客户 &gt; 托管一般客户 &gt; 托管预警客户 &gt; 托管高风险客户</td><td>全部托管客户</td><td>录入、经办、复核、审批、清算支付</td><td><span class="tag tag-blue">42</span></td><td>2026-07-12</td><td><span class="tag tag-green">启用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>业务类型优先级规则</b></td><td><span class="tag tag-blue">0.25</span></td><td class="rule-order">投资类 &gt; 资金归集 &gt; 分配类 &gt; 费用类</td><td>清算指令</td><td>录入、经办、复核、审批、清算支付</td><td><span class="tag tag-blue">36</span></td><td>2026-07-12</td><td><span class="tag tag-green">启用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>截止时间优先级规则</b></td><td><span class="tag tag-blue">0.20</span></td><td class="rule-order">30分钟内到期 &gt; 1小时内到期 &gt; 当日到期 &gt; 非当日到期</td><td>临近截止指令</td><td>录入、经办、复核、审批、清算支付</td><td><span class="tag tag-red">28</span></td><td>2026-07-11</td><td><span class="tag tag-green">启用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>金额优先级规则</b></td><td><span class="tag tag-blue">0.15</span></td><td class="rule-order">大额指令 &gt; 中额指令 &gt; 小额指令</td><td>资金划拨指令</td><td>录入、经办、复核、审批、清算支付</td><td><span class="tag tag-blue">19</span></td><td>2026-07-10</td><td><span class="tag tag-green">启用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                  <tr><td><b>用户忍受度优先级规则</b></td><td><span class="tag tag-blue">0.10</span></td><td class="rule-order">低忍受度客户 &gt; 中忍受度客户 &gt; 高忍受度客户</td><td>服务体验监控</td><td>录入、经办、复核、审批、清算支付</td><td><span class="tag tag-blue">11</span></td><td>2026-07-09</td><td><span class="tag tag-green">启用</span></td><td><span class="rule-op-cell"><span class="rule-op">编辑</span><span class="rule-op delete">删除</span></span></td></tr>
+                </tbody>
+              </table>
+              <div class="rule-footer priority-footer"><span>共 <strong>5</strong> 条规则</span><span class="weight-summary">当前权重合计 <b>1.00</b></span></div>
+            </div>
+          </section>
+        </div>
+
+        <div class="rule-note">
+          <div class="rule-note-item"><span>规则版本</span><b>V2026.07.06</b></div>
+          <div class="rule-note-item"><span>启用规则</span><b>16 条</b></div>
+          <div class="rule-note-item"><span>配置生效时间</span><b>2026-07-06   </b></div>
+          <div class="rule-note-item rule-note-actions"><div class="button">导出配置</div><div class="button primary">保存配置</div></div>
+        </div>
+      </section>
     </main>
   </div>
   <script>
     const viewMeta = {
       manager: { title: "管理侧运营看板", role: "运营团队-团队长", badge: "12", user: "张振鹏 ▾" },
       employee: { title: "员工侧看板", role: "运营团队-员工视角", badge: "8", user: "张媛明 ▾" },
-      customer: { title: "客户看板", role: "客户服务-客户视角", badge: "3", user: "沈先生 ▾" }
+      customer: { title: "客户看板", role: "客户服务-客户视角", badge: "3", user: "沈先生 ▾" },
+      rules: { title: "规则配置", role: "规则配置-主管视角", badge: "5", user: "张振鹏 ▾" }
     };
 
     document.querySelectorAll("[data-view]").forEach((item) => {
