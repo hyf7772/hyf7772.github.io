@@ -65,9 +65,10 @@
     .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
     .employee-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .customer-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .kpi { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; min-height: 104px; box-shadow: 0 5px 16px rgba(24, 53, 90, 0.04); display: grid; grid-template-columns: 46px 1fr; gap: 12px; align-items: center; }
+    .kpi { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 16px 16px 24px; min-height: 104px; box-shadow: 0 5px 16px rgba(24, 53, 90, 0.04); display: grid; grid-template-columns: 52px 1fr; gap: 16px; align-items: center; }
+    .employee-kpis .kpi, .customer-kpis .kpi { padding-left: 42px; gap: 18px; }
     .kpi-icon { width: 48px; height: 48px; display: block; object-fit: contain; align-self: center; justify-self: center; }
-    .kpi-label { color: #3d4b5f; font-size: 13px; font-weight: 700; display: flex; gap: 4px; align-items: center; }
+    .kpi-label { color: #3d4b5f; font-size: 14px; font-weight: 800; display: flex; gap: 4px; align-items: center; }
     .kpi-value { font-size: 30px; line-height: 1.1; margin: 6px 0; font-weight: 800; }
     .kpi-sub { font-size: 12px; color: var(--muted); }
     .up { color: var(--green); font-weight: 700; }
@@ -98,6 +99,7 @@
     .summary strong { color: #1e2a39; }
 
     .risk-table td:nth-child(1) { color: #2a3a50; font-weight: 700; }
+    .risk-table th:nth-child(3), .risk-table td:nth-child(3) { text-align: center; }
     .deadline { color: var(--red); font-weight: 900; }
     .ok-time { color: var(--green); font-weight: 800; }
 
@@ -161,6 +163,8 @@
     .rule-panel th:last-child, .rule-panel td:last-child { text-align: center; }
     .rule-panel th:nth-last-child(2), .rule-panel td:nth-last-child(2) { text-align: center; }
     .rule-panel th:nth-child(3), .rule-panel td:nth-child(3) { text-align: center; }
+    .keyword-panel th:nth-child(2), .keyword-panel td:nth-child(2),
+    .risk-rule-panel th:nth-child(2), .risk-rule-panel td:nth-child(2) { text-align: center; }
     .priority-panel th:nth-child(3), .priority-panel td:nth-child(3) { text-align: center; padding-left: 6px; padding-right: 6px; }
     .priority-panel th:nth-child(1), .priority-panel td:nth-child(1) { text-align: center; }
     .priority-panel th:nth-child(2), .priority-panel td:nth-child(2) { text-align: center; padding-left: 43px; }
@@ -190,6 +194,8 @@
       repeating-linear-gradient(to right, transparent 0 82px, #f2f5f9 83px); position: relative; overflow: hidden; }
     .line-chart svg { position: absolute; inset: 14px 18px 28px 34px; width: calc(100% - 52px); height: calc(100% - 42px); overflow: visible; }
     .axis-labels { position: absolute; left: 36px; right: 18px; bottom: 8px; display: flex; justify-content: space-between; color: #6f7e91; font-size: 11px; }
+    .chart-image-wrap { height: 330px; border: 1px solid #eef3f8; border-radius: 7px; background: #fff; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .chart-image { width: 100%; height: 100%; object-fit: contain; display: block; }
     .stage-track { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; align-items: center; }
     .stage { position: relative; min-height: 52px; padding: 8px; border-radius: 7px; background: #f7faff; border: 1px solid #e8eef6; font-size: 12px; color: #526072; }
     .stage.done { color: var(--green); background: #effaf5; border-color: #ccebdd; }
@@ -375,12 +381,13 @@
               <table>
                 <thead><tr><th>任务编号</th><th>业务类型</th><th>推送时间</th><th>当前节点</th><th>优先级</th><th>预计完成时间</th><th>状态</th></tr></thead>
                 <tbody>
-                  <tr><td>INS202507110021</td><td>证券清算</td><td>05-20 10:10</td><td>权益核验</td><td><span class="tag tag-red">高</span></td><td>05-20 11:20</td><td><span class="tag tag-red">立即处理</span></td></tr>
-                  <tr><td>INS202507110022</td><td>资金清算</td><td>05-20 09:25</td><td>等待审核</td><td><span class="tag tag-red">高</span></td><td>05-20 11:00</td><td><span class="tag tag-red">立即处理</span></td></tr>
-                  <tr><td>INS202507110023</td><td>债券确认</td><td>05-20 08:53</td><td>异常处理中</td><td><span class="tag tag-orange">中</span></td><td>05-20 12:10</td><td><span class="tag tag-red">立即处理</span></td></tr>
-                  <tr><td>INS202507110024</td><td>回单校对</td><td>05-20 08:30</td><td>补充处理</td><td><span class="tag tag-red">高</span></td><td>05-20 12:50</td><td><span class="tag tag-red">立即处理</span></td></tr>
-                  <tr><td>INS202507110025</td><td>托付结算</td><td>05-20 07:31</td><td>流程处理中</td><td><span class="tag tag-orange">中</span></td><td>05-20 13:00</td><td><span class="tag tag-red">立即处理</span></td></tr>
-                  <tr><td>INS202507110026</td><td>估值核验</td><td>05-20 07:40</td><td>等待确认</td><td><span class="tag tag-green">低</span></td><td>05-20 14:30</td><td><span class="tag tag-blue">正常处理</span></td></tr>
+                  <tr><td>INS202507110021</td><td>证券清算</td><td>07-07 10:10</td><td>权益核验</td><td><span class="tag tag-red">高</span></td><td>07-07 11:20</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110022</td><td>资金清算</td><td>07-07 09:25</td><td>等待审核</td><td><span class="tag tag-red">高</span></td><td>07-07 11:00</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110023</td><td>债券确认</td><td>07-07 08:53</td><td>异常处理中</td><td><span class="tag tag-orange">中</span></td><td>07-07 12:10</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110024</td><td>回单校对</td><td>07-07 08:30</td><td>补充处理</td><td><span class="tag tag-red">高</span></td><td>07-07 12:50</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110025</td><td>托付结算</td><td>07-07 07:31</td><td>流程处理中</td><td><span class="tag tag-orange">中</span></td><td>07-07 13:00</td><td><span class="tag tag-red">立即处理</span></td></tr>
+                  <tr><td>INS202507110026</td><td>估值核验</td><td>07-07 07:40</td><td>等待确认</td><td><span class="tag tag-green">低</span></td><td>07-07 14:30</td><td><span class="tag tag-blue">正常处理</span></td></tr>
+                  <tr><td>INS202507110026</td><td>估值核验</td><td>07-07 07:40</td><td>等待确认</td><td><span class="tag tag-green">低</span></td><td>07-07 14:30</td><td><span class="tag tag-blue">正常处理</span></td></tr>
                 </tbody>
               </table>
               <div class="summary"><span>共 <strong>6</strong> 条记录</span><span>高优先级 <strong style="color:#df1f2d">3</strong> 条</span></div>
@@ -390,13 +397,8 @@
           <section class="panel">
             <div class="panel-head"><span class="panel-title">今日任务趋势图</span><span class="more">查看全部 ›</span></div>
             <div class="panel-body">
-              <div class="line-chart">
-                <svg viewBox="0 0 520 150" preserveAspectRatio="none">
-                  <polyline points="0,115 65,96 130,70 195,55 260,36 325,25 390,45 455,62 520,82" fill="none" stroke="#1677ff" stroke-width="4"/>
-                  <polyline points="0,126 65,108 130,86 195,61 260,48 325,36 390,53 455,72 520,90" fill="none" stroke="#16a06b" stroke-width="4"/>
-                  <g fill="#fff" stroke="#1677ff" stroke-width="3"><circle cx="0" cy="115" r="5"/><circle cx="130" cy="70" r="5"/><circle cx="260" cy="36" r="5"/><circle cx="390" cy="45" r="5"/><circle cx="520" cy="82" r="5"/></g>
-                </svg>
-                <div class="axis-labels"><span>09:00</span><span>10:00</span><span>11:00</span><span>12:00</span><span>13:00</span><span>14:00</span><span>15:00</span><span>16:00</span><span>17:00</span></div>
+              <div class="chart-image-wrap">
+                <img class="chart-image" src="images/chart.jpg" alt="今日任务趋势图" />
               </div>
               <div class="summary"><span>统计周期：今日</span><span><strong style="color:#1677ff">待处理任务</strong> / <strong style="color:#16a06b">已完成任务</strong></span></div>
             </div>
@@ -486,12 +488,12 @@
               <table>
                 <thead><tr><th>指令编号</th><th>业务类型</th><th>提交时间</th><th>当前节点</th><th>处理进度</th><th>预计完成时间</th><th>状态</th></tr></thead>
                 <tbody>
-                  <tr><td>CL202507110001</td><td>证券清算</td><td>05-20 09:15</td><td>资料核验中</td><td><div class="bar"><span style="width:67%"></span></div></td><td>05-20 12:00</td><td><span class="tag tag-blue">处理中</span></td></tr>
-                  <tr><td>CL202507110002</td><td>基金赎回</td><td>05-20 08:40</td><td>清算处理中</td><td><div class="bar"><span style="width:50%"></span></div></td><td>05-20 15:50</td><td><span class="tag tag-blue">处理中</span></td></tr>
-                  <tr><td>CL202507110003</td><td>利息分配</td><td>05-19 16:45</td><td>待审批</td><td><div class="bar"><span style="width:80%"></span></div></td><td>05-20 11:00</td><td><span class="tag tag-blue">处理中</span></td></tr>
-                  <tr><td>CL202507110004</td><td>证券清算</td><td>05-19 14:22</td><td>清算完成</td><td><div class="bar"><span style="width:100%"></span></div></td><td>05-19 11:10</td><td><span class="tag tag-green">已完成</span></td></tr>
-                  <tr><td>CL202507110005</td><td>红利再投</td><td>05-19 11:10</td><td>清算完成</td><td><div class="bar"><span style="width:100%"></span></div></td><td>05-19 12:35</td><td><span class="tag tag-green">已完成</span></td></tr>
-                  <tr><td>CL202507110006</td><td>资金划拨</td><td>05-18 17:30</td><td>待客户补充</td><td><div class="bar load-high"><span style="width:33%"></span></div></td><td>05-20 13:30</td><td><span class="tag tag-orange">待处理</span></td></tr>
+                  <tr><td>CL202507110001</td><td>证券清算</td><td>07-07 09:15</td><td>资料核验中</td><td><div class="bar"><span style="width:67%"></span></div></td><td>07-07 12:00</td><td><span class="tag tag-blue">处理中</span></td></tr>
+                  <tr><td>CL202507110002</td><td>基金赎回</td><td>07-07 08:40</td><td>清算处理中</td><td><div class="bar"><span style="width:50%"></span></div></td><td>07-07 15:50</td><td><span class="tag tag-blue">处理中</span></td></tr>
+                  <tr><td>CL202507110003</td><td>利息分配</td><td>07-07 16:45</td><td>待审批</td><td><div class="bar"><span style="width:80%"></span></div></td><td>07-07 11:00</td><td><span class="tag tag-blue">处理中</span></td></tr>
+                  <tr><td>CL202507110004</td><td>证券清算</td><td>07-07 14:22</td><td>清算完成</td><td><div class="bar"><span style="width:100%"></span></div></td><td>07-07 11:10</td><td><span class="tag tag-green">已完成</span></td></tr>
+                  <tr><td>CL202507110005</td><td>红利再投</td><td>07-07 11:10</td><td>清算完成</td><td><div class="bar"><span style="width:100%"></span></div></td><td>07-07 12:35</td><td><span class="tag tag-green">已完成</span></td></tr>
+                  <tr><td>CL202507110006</td><td>资金划拨</td><td>07-07 17:30</td><td>待客户补充</td><td><div class="bar load-high"><span style="width:33%"></span></div></td><td>07-07 13:30</td><td><span class="tag tag-orange">待处理</span></td></tr>
                 </tbody>
               </table>
               <div class="summary"><span>共 <strong>6</strong> 条记录</span><span>需客户处理 <strong style="color:#df1f2d">3</strong> 条</span></div>
@@ -538,10 +540,10 @@
               <table>
                 <thead><tr><th>指令编号</th><th>剩余时间</th><th>截止时间</th><th>优先级</th><th>建议操作</th></tr></thead>
                 <tbody>
-                  <tr><td>CL202507110010</td><td class="deadline">1时25分</td><td>05-20 12:00</td><td><span class="tag tag-red">高</span></td><td><span class="more">尽快补充资料</span></td></tr>
-                  <tr><td>CL202507110011</td><td class="deadline">2时45分</td><td>05-20 13:30</td><td><span class="tag tag-red">高</span></td><td><span class="more">上传授权文件</span></td></tr>
-                  <tr><td>CL202507110012</td><td class="ok-time">5时10分</td><td>05-20 16:00</td><td><span class="tag tag-orange">中</span></td><td><span class="more">确认回单信息</span></td></tr>
-                  <tr><td>CL202507110013</td><td class="ok-time">9时30分</td><td>05-20 20:30</td><td><span class="tag tag-green">低</span></td><td><span class="more">晚交清单</span></td></tr>
+                  <tr><td>CL202507110010</td><td class="deadline">1时25分</td><td>07-07 12:00</td><td><span class="tag tag-red">高</span></td><td><span class="more">尽快补充资料</span></td></tr>
+                  <tr><td>CL202507110011</td><td class="deadline">2时45分</td><td>07-07 13:30</td><td><span class="tag tag-red">高</span></td><td><span class="more">上传授权文件</span></td></tr>
+                  <tr><td>CL202507110012</td><td class="ok-time">5时10分</td><td>07-07 16:00</td><td><span class="tag tag-orange">中</span></td><td><span class="more">确认回单信息</span></td></tr>
+                  <tr><td>CL202507110013</td><td class="ok-time">9时30分</td><td>07-07 20:30</td><td><span class="tag tag-green">低</span></td><td><span class="more">晚交清单</span></td></tr>
                 </tbody>
               </table>
               <div class="summary"><span>共 <strong>4</strong> 条临近截止指令</span></div>
@@ -632,7 +634,7 @@
         </section>
 
         <div class="rules-layout">
-          <section class="panel rule-panel">
+          <section class="panel rule-panel keyword-panel">
             <div class="panel-head">
               <div class="panel-title">分类关键词配置</div>
               <div class="rule-tools"><span class="mini-button">新增关键词</span></div>
@@ -652,7 +654,7 @@
             </div>
           </section>
 
-          <section class="panel rule-panel">
+          <section class="panel rule-panel risk-rule-panel">
             <div class="panel-head">
               <div class="panel-title">风险设置</div>
               <div class="rule-tools"><span class="mini-button">新增规则</span></div>
