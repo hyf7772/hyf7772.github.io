@@ -64,6 +64,7 @@
     .fresh { color: var(--muted); font-size: 12px; }
 
     .kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
+    .employee-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
     .kpi { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; min-height: 104px; box-shadow: 0 5px 16px rgba(24, 53, 90, 0.04); display: grid; grid-template-columns: 46px 1fr; gap: 12px; align-items: center; }
     .kpi-icon { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-size: 23px; font-weight: 800; }
     .kpi-label { color: #3d4b5f; font-size: 13px; font-weight: 700; display: flex; gap: 4px; align-items: center; }
@@ -323,12 +324,11 @@
           <h1>员工侧看板</h1>
           <div class="fresh">数据更新于 2026-07-11 10:30:00　⟳</div>
         </div>
-        <div class="kpis">
+        <div class="kpis employee-kpis">
           <article class="kpi"><div class="kpi-icon" style="background:#1677ff">▤</div><div><div class="kpi-label">全部待办总量 ⓘ</div><div class="kpi-value">1,286</div><div class="kpi-sub">较昨日 <span class="down">+128 ↑ +11.07%</span></div></div></article>
           <article class="kpi"><div class="kpi-icon" style="background:#ff7a00">◇</div><div><div class="kpi-label">今日新接单 ⓘ</div><div class="kpi-value">18</div><div class="kpi-sub">较昨日 <span class="down">+4 ↑ +28.57%</span></div></div></article>
           <article class="kpi"><div class="kpi-icon" style="background:#df1f2d">!</div><div><div class="kpi-label">疑似漏单 ⓘ</div><div class="kpi-value">3</div><div class="kpi-sub">较昨日 <span class="down">+1 ↑ +50.00%</span></div></div></article>
           <article class="kpi"><div class="kpi-icon" style="background:#6d3be6">!</div><div><div class="kpi-label">可能超时风险 ⓘ</div><div class="kpi-value">7</div><div class="kpi-sub">较昨日 <span class="down">+2 ↑ +40.00%</span></div></div></article>
-          <article class="kpi"><div class="kpi-icon" style="background:#16a06b">◔</div><div><div class="kpi-label">预计最晚完成 ⓘ</div><div class="kpi-value">今日 19:20</div><div class="kpi-sub">较昨日 <span class="down">+22分 ↑ +2.20%</span></div></div></article>
         </div>
 
         <div class="employee-layout">
@@ -397,12 +397,12 @@
             <div class="panel-head"><span class="panel-title">漏单与异常提醒</span><span class="more">查看全部 ›</span></div>
             <div class="panel-body">
               <table>
-                <thead><tr><th>任务编号</th><th>异常类型</th><th>触发原因</th><th>影响程度</th><th>建议动作</th><th>状态</th></tr></thead>
+                <thead><tr><th>任务编号</th><th>异常类型</th><th>触发原因</th><th>影响程度</th><th>状态</th></tr></thead>
                 <tbody>
-                  <tr><td>INS202507110051</td><td><span class="tag tag-red">疑似漏单</span></td><td>超过 15 分钟未响应</td><td>高</td><td>立即补充处理</td><td><span class="tag tag-red">待处理</span></td></tr>
-                  <tr><td>INS202507110052</td><td><span class="tag tag-orange">风险超时</span></td><td>清算时限临近</td><td>高</td><td>优先转办</td><td><span class="tag tag-blue">处理中</span></td></tr>
-                  <tr><td>INS202507110053</td><td><span class="tag tag-orange">资料缺失</span></td><td>附件清晰度不足</td><td>中</td><td>补充材料</td><td><span class="tag tag-red">待核实</span></td></tr>
-                  <tr><td>INS202507110054</td><td><span class="tag tag-blue">停顿预警</span></td><td>复核节点停留</td><td>中</td><td>询问原因</td><td><span class="tag tag-orange">需确认</span></td></tr>
+                  <tr><td>INS202507110051</td><td><span class="tag tag-red">疑似漏单</span></td><td>超过 15 分钟未响应</td><td>高</td><td><span class="tag tag-red">待处理</span></td></tr>
+                  <tr><td>INS202507110052</td><td><span class="tag tag-orange">风险超时</span></td><td>清算时限临近</td><td>高</td><td><span class="tag tag-blue">处理中</span></td></tr>
+                  <tr><td>INS202507110053</td><td><span class="tag tag-orange">资料缺失</span></td><td>附件清晰度不足</td><td>中</td><td><span class="tag tag-red">待核实</span></td></tr>
+                  <tr><td>INS202507110054</td><td><span class="tag tag-blue">停顿预警</span></td><td>复核节点停留</td><td>中</td><td><span class="tag tag-orange">需确认</span></td></tr>
                 </tbody>
               </table>
               <div class="summary"><span>共 <strong style="color:#df1f2d">5</strong> 条异常记录</span></div>
@@ -418,17 +418,13 @@
                 <div class="notice-row"><span class="dot" style="background:#f58b00"></span><span>今日已处理 <strong>18</strong> 条任务，后续建议增加 1 人协助处理</span><span class="tag tag-orange">协同建议</span></div>
                 <div class="notice-row"><span class="dot" style="background:#16a06b"></span><span>未来 <strong>2</strong> 小时预计任务压力将下降</span><span class="tag tag-green">趋势判断</span></div>
               </div>
-              <div class="charts">
-                <div>
-                  <div class="mini-row"><span>流转中</span><div class="bar"><span style="width:68%"></span></div><b>24</b></div>
-                  <div class="mini-row"><span>待复核</span><div class="bar load-high"><span style="width:82%"></span></div><b>38</b></div>
-                  <div class="mini-row"><span>待补录</span><div class="bar"><span style="width:40%"></span></div><b>16</b></div>
-                  <div class="mini-row"><span>已完成</span><div class="bar"><span style="width:31%"></span></div><b>10</b></div>
-                </div>
-                <div><div class="donut"></div></div>
+              <div style="margin-top:14px;">
+                <div class="mini-row"><span>流转中</span><div class="bar"><span style="width:68%"></span></div><b>24</b></div>
+                <div class="mini-row"><span>待复核</span><div class="bar load-high"><span style="width:82%"></span></div><b>38</b></div>
+                <div class="mini-row"><span>待补录</span><div class="bar"><span style="width:40%"></span></div><b>16</b></div>
+                <div class="mini-row"><span>已完成</span><div class="bar"><span style="width:31%"></span></div><b>10</b></div>
               </div>
             </div>
-            <div class="actions"><div class="button primary">启动支援</div><div class="button" style="border-color:#1677ff;color:#1677ff">批量处理</div></div>
           </section>
         </div>
       </section>
